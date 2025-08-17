@@ -33,7 +33,10 @@
     "extra": {
       "eas": {
         "projectId": "73afeeac-3511-4cd4-ad6d-dafe7752763a"
-      }
+      },
+      "supabaseUrl": "https://pkxvjpfbmaaronqznfyi.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3M...",
+      "hostelApiBaseUrl": "https://api.hostel-ucc.com/v1"
     }
   }
 }

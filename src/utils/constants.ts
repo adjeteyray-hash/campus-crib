@@ -1,6 +1,8 @@
-// Environment variables
-export const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
-export const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || '';
+// Environment variables with fallbacks from app.json
+import Constants from 'expo-constants';
+
+export const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || Constants.expoConfig?.extra?.supabaseUrl || '';
+export const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || Constants.expoConfig?.extra?.supabaseAnonKey || '';
 
 // Check if Supabase is properly configured
 export const IS_SUPABASE_CONFIGURED = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
@@ -14,6 +16,7 @@ export const FALLBACK_CONFIG = {
 // Updated API configuration - using mock data for development
 export const HOSTEL_API_BASE_URL =
   process.env.EXPO_PUBLIC_HOSTEL_API_BASE_URL ||
+  Constants.expoConfig?.extra?.hostelApiBaseUrl ||
   'https://mockapi.io/projects/your-project-id';
 
 // Alternative API endpoints for fallback
