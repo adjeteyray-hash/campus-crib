@@ -1,0 +1,247 @@
+import { NavigationProp, CommonActions } from '@react-navigation/native';
+import { LandlordStackParamList, LandlordStackNavigationProp } from '../types/navigation';
+import { Share, Linking, Platform } from 'react-native';
+
+/**
+ * Landlord-specific navigation helpers
+ * Provides convenient methods for common landlord navigation patterns
+ */
+
+/**
+ * Navigate to MyHostels and reset the navigation stack
+ */
+export const navigateToMyHostels = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.dispatch(
+    CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'MyHostelsMain' }],
+    })
+  );
+};
+
+/**
+ * Navigate to AddHostel screen
+ */
+export const navigateToAddHostel = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.navigate('AddHostelMain');
+};
+
+/**
+ * Navigate to EditHostel screen
+ */
+export const navigateToEditHostel = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  hostelId: string
+) => {
+  navigation.navigate('EditHostel', { hostelId });
+};
+
+/**
+ * Navigate to Analytics with optional hostel filter
+ */
+export const navigateToAnalyticsWithFilter = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  hostelId?: string
+) => {
+  navigation.navigate('AnalyticsMain', { hostelId });
+};
+
+/**
+ * Navigate to hostel detail from different sources
+ */
+export const navigateToHostelDetailFromDashboard = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  hostelId: string
+) => {
+  navigation.navigate('HostelDetail', { hostelId, source: 'dashboard' });
+};
+
+export const navigateToHostelDetailFromAnalytics = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  hostelId: string
+) => {
+  navigation.navigate('HostelDetail', { hostelId, source: 'analytics' });
+};
+
+/**
+ * Navigate back to the appropriate tab based on source
+ */
+export const navigateBackFromHostelDetail = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  source: 'dashboard' | 'analytics' = 'dashboard'
+) => {
+  switch (source) {
+    case 'analytics':
+      navigation.navigate('AnalyticsMain', {});
+      break;
+    case 'dashboard':
+    default:
+      navigation.navigate('MyHostelsMain');
+      break;
+  }
+};
+
+/**
+ * Navigate back from EditHostel to MyHostels
+ */
+export const navigateBackFromEditHostel = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.navigate('MyHostelsMain');
+};
+
+/**
+ * Navigate back from AddHostel to MyHostels after successful creation
+ */
+export const navigateBackFromAddHostel = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.navigate('MyHostelsMain');
+};
+
+/**
+ * Check if we can go back in the navigation stack
+ */
+export const canGoBack = (navigation: NavigationProp<LandlordStackParamList>): boolean => {
+  return navigation.canGoBack();
+};
+
+/**
+ * Go back or navigate to MyHostels if no back stack
+ */
+export const goBackOrMyHostels = (navigation: NavigationProp<LandlordStackParamList>) => {
+  if (navigation.canGoBack()) {
+    navigation.goBack();
+  } else {
+    navigation.navigate('MyHostelsMain');
+  }
+};
+
+/**
+ * Navigate to profile tab
+ */
+export const navigateToProfile = (navigation: NavigationProp<LandlordStackParamList>) => {
+  // Note: Profile is a tab, not a stack screen, so this should be handled by tab navigation
+  // For now, we'll navigate to MyHostelsMain as a fallback
+  navigation.navigate('MyHostelsMain');
+};
+
+/**
+ * Navigate to analytics tab
+ */
+export const navigateToAnalytics = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.navigate('AnalyticsMain', {});
+};
+
+/**
+ * Get current route name
+ */
+export const getCurrentRouteName = (navigation: NavigationProp<LandlordStackParamList>): string => {
+  const state = navigation.getState();
+  const route = state.routes[state.index];
+  return route.name;
+};
+
+/**
+ * Check if currently on a specific tab
+ */
+export const isOnTab = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  tabName: keyof LandlordStackParamList
+): boolean => {
+  return getCurrentRouteName(navigation) === tabName;
+};
+
+/**
+ * Share hostel via deep link (landlord perspective)
+ */
+export const shareHostelAsLandlord = async (hostelId: string, hostelName: string) => {
+  const deepLink = `campuscrib://hostel/${hostelId}`;
+  const message = `Check out my hostel: ${hostelName}\nBook now: ${deepLink}`;
+  
+  try {
+    await Share.share({
+      message,
+      url: deepLink,
+      title: `Share ${hostelName}`,
+    });
+  } catch (error) {
+    console.warn('Failed to share hostel:', error);
+  }
+};
+
+/**
+ * Share analytics report
+ */
+export const shareAnalyticsReport = async (hostelName: string, metrics: {
+  views: number;
+  contacts: number;
+  conversionRate: number;
+}) => {
+  const message = `${hostelName} Performance Report:\n` +
+    `📊 Views: ${metrics.views}\n` +
+    `📞 Contacts: ${metrics.contacts}\n` +
+    `📈 Conversion Rate: ${metrics.conversionRate.toFixed(1)}%\n\n` +
+    `Generated by CampusCrib`;
+  
+  try {
+    await Share.share({
+      message,
+      title: `${hostelName} Analytics Report`,
+    });
+  } catch (error) {
+    console.warn('Failed to share analytics report:', error);
+  }
+};
+
+/**
+ * Open external map app with hostel location (for verification)
+ */
+export const openMapWithHostelLocation = async (address: string, hostelName: string) => {
+  try {
+    const encodedAddress = encodeURIComponent(`${hostelName}, ${address}`);
+    
+    // Try Google Maps first, fallback to Apple Maps on iOS
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+    const appleMapsUrl = `http://maps.apple.com/?q=${encodedAddress}`;
+    
+    const mapUrl = Platform.OS === 'ios' ? appleMapsUrl : googleMapsUrl;
+    
+    const canOpen = await Linking.canOpenURL(mapUrl);
+    if (canOpen) {
+      await Linking.openURL(mapUrl);
+    }
+  } catch (error) {
+    console.warn('Failed to open map:', error);
+  }
+};
+
+/**
+ * Navigate to specific hostel analytics
+ */
+export const viewHostelAnalytics = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  hostelId: string
+) => {
+  navigation.navigate('AnalyticsMain', { hostelId });
+};
+
+/**
+ * Quick action to duplicate hostel (navigate to AddHostel with pre-filled data)
+ * Note: The actual duplication logic will be handled in the AddHostel screen
+ */
+export const duplicateHostel = (
+  navigation: NavigationProp<LandlordStackParamList>,
+  sourceHostelId: string
+) => {
+  // Navigate to AddHostel with a special parameter indicating duplication
+  // The AddHostel screen will handle loading the source hostel data
+  // TODO: Implement duplication logic with sourceHostelId: ${sourceHostelId}
+  navigation.navigate('AddHostelMain');
+  // TODO: Pass sourceHostelId when AddHostel screen supports duplication
+};
+
+/**
+ * Batch operations helper - navigate to MyHostels with selection mode
+ * Note: This will be used when MyHostels screen supports batch operations
+ */
+export const enterBatchMode = (navigation: NavigationProp<LandlordStackParamList>) => {
+  navigation.navigate('MyHostelsMain');
+  // TODO: Add batch mode parameter when MyHostels screen supports it
+};

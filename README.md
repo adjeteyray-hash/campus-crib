@@ -1,50 +1,158 @@
+# CampusCrib Mobile App
 
-# TypeScript
+CampusCrib is a React Native mobile application that connects students with available hostels in Ghana. The app provides robust search functionality, booking history tracking, and direct landlord contact features.
 
-[![CI](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![Downloads](https://img.shields.io/npm/dm/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/microsoft/TypeScript/badge)](https://securityscorecards.dev/viewer/?uri=github.com/microsoft/TypeScript)
+## 🚀 Getting Started
 
+### Prerequisites
 
-[TypeScript](https://www.typescriptlang.org/) is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript. Try it out at the [playground](https://www.typescriptlang.org/play/), and stay up to date via [our blog](https://blogs.msdn.microsoft.com/typescript) and [Twitter account](https://twitter.com/typescript).
+- Node.js (v14 or higher)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (for iOS development)
+- Android Studio/Emulator (for Android development)
 
-Find others who are using TypeScript at [our community page](https://www.typescriptlang.org/community/).
+### Installation
 
-## Installing
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-For the latest stable version:
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Fill in your Supabase credentials and API endpoints.
 
-```bash
-npm install -D typescript
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+
+## 📱 Available Scripts
+
+- `npm start` - Start the Expo development server
+- `npm run android` - Run on Android device/emulator
+- `npm run ios` - Run on iOS device/simulator
+- `npm run web` - Run in web browser
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
+- `npm run type-check` - Run TypeScript type checking
+- `npm test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage
+
+## 🏗️ Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── common/          # Shared components (LoadingSpinner, ErrorBoundary)
+│   ├── hostel/          # Hostel-specific components
+│   └── forms/           # Form components and validation
+├── screens/             # Screen components organized by user role
+│   ├── auth/            # Authentication screens
+│   ├── student/         # Student screens
+│   ├── landlord/        # Landlord screens
+│   └── shared/          # Shared screens
+├── navigation/          # Navigation configuration
+├── services/            # API and external service integrations
+├── contexts/            # React Context providers
+├── types/               # TypeScript type definitions
+├── utils/               # Utility functions and helpers
+└── hooks/               # Custom React hooks
 ```
 
-For our nightly builds:
+## 🛠️ Technology Stack
 
-```bash
-npm install -D typescript@next
+- **Framework**: React Native with Expo SDK
+- **Language**: TypeScript (strict mode)
+- **Navigation**: React Navigation v6
+- **Authentication**: Supabase Auth
+- **Database**: Supabase PostgreSQL with RLS
+- **Storage**: Supabase Storage
+- **External API**: Hostel API UCC
+- **Code Quality**: ESLint + Prettier
+- **Testing**: Jest + React Native Testing Library
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file with the following variables:
+
+```env
+EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+EXPO_PUBLIC_HOSTEL_API_BASE_URL=https://api.hostel-ucc.com/v1
 ```
 
-## Contribute
+### Supabase Setup
 
-There are many ways to [contribute](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md) to TypeScript.
-* [Submit bugs](https://github.com/microsoft/TypeScript/issues) and help us verify fixes as they are checked in.
-* Review the [source code changes](https://github.com/microsoft/TypeScript/pulls).
-* Engage with other TypeScript users and developers on [StackOverflow](https://stackoverflow.com/questions/tagged/typescript).
-* Help each other in the [TypeScript Community Discord](https://discord.gg/typescript).
-* Join the [#typescript](https://twitter.com/search?q=%23TypeScript) discussion on Twitter.
-* [Contribute bug fixes](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md).
+1. Create a new Supabase project
+2. Set up the database schema (see design document)
+3. Configure Row Level Security (RLS) policies
+4. Set up Storage bucket for hostel images
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see
-the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
-with any additional questions or comments.
+## 👥 User Roles
 
-## Documentation
+### Students
+- Browse and search hostels
+- View detailed hostel information
+- Contact landlords directly
+- Track booking history
 
-*  [TypeScript in 5 minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
-*  [Programming handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-*  [Homepage](https://www.typescriptlang.org/)
+### Landlords
+- Add and manage hostel listings
+- View analytics and performance metrics
+- Update hostel information and images
+- Manage contact information
 
-## Roadmap
+## 🧪 Testing
 
-For details on our planned features and future direction, please refer to our [roadmap](https://github.com/microsoft/TypeScript/wiki/Roadmap).
+Run the test suite:
+
+```bash
+npm test
+```
+
+Run tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
+## 📝 Code Quality
+
+The project uses ESLint and Prettier for code quality and formatting:
+
+```bash
+npm run lint    # Check and fix linting issues
+npm run format  # Format code with Prettier
+```
+
+## 🚀 Deployment
+
+The app is built with Expo and can be deployed to:
+
+- **iOS App Store** via Expo Application Services (EAS)
+- **Google Play Store** via EAS
+- **Over-the-air updates** via Expo Updates
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## 📞 Support
+
+For support and questions, please contact the development team.

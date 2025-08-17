@@ -7,7 +7,6 @@ node_modules/
 .expo/
 dist/
 web-build/
-expo-env.d.ts
 
 # Native
 *.orig.*
@@ -31,8 +30,29 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo
 
+# testing
+coverage/
+*.lcov
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
 app-example
+
+# Build artifacts and Node.js utilities
+lib/
+bin/
+*.js.map
+*.d.ts.map
+
+# Node.js utility scripts (moved to scripts/ directory)
+# These should not be bundled with React Native app

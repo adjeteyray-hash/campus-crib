@@ -1,4 +1,39 @@
 {
-  "name": "campuscrib",
-  "slug": "campuscrib"
+  "expo": {
+    "name": "CampusCrib",
+    "slug": "campuscrib",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.strange_r1.campuscrib"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-font",
+      "expo-router"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "73afeeac-3511-4cd4-ad6d-dafe7752763a"
+      }
+    }
+  }
 }
