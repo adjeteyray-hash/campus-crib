@@ -10,8 +10,6 @@ module.exports = function (api) {
     ],
     plugins: [
       'react-native-reanimated/plugin',
-      // Add polyfill globals plugin for better React Native compatibility
-      'react-native-polyfill-globals',
       // Remove console.log in production for better performance
       ['babel-plugin-transform-remove-console', { exclude: ['error', 'warn'] }],
     ],

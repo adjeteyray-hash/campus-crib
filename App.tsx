@@ -1,7 +1,4 @@
-// Import polyfills first - this must be the very first import
-import './polyfills';
-
-// Then import other dependencies
+// Import dependencies
 import 'react-native-gesture-handler';
 import React, { Suspense, lazy } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
